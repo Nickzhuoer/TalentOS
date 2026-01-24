@@ -1,0 +1,21 @@
+{
+  "name": "TalentOS - 智能人才库",
+  "short_name": "TalentOS",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#F8FAFC",
+  "theme_color": "#ffffff",
+  "description": "Local-first AI recruiting platform",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
