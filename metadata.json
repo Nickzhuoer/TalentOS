@@ -1,0 +1,5 @@
+{
+  "name": "TalentOS",
+  "description": "A local-first, AI-powered talent acquisition platform for macOS. Securely manages resumes using the File System Access API and parses data with Gemini.",
+  "requestFramePermissions": []
+}
