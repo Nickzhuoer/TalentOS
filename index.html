@@ -12,10 +12,20 @@
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
       
+      :root {
+        --glass-bg: rgba(255, 255, 255, 0.72);
+        --glass-border: rgba(255, 255, 255, 0.5);
+        --shadow-soft: 0 4px 24px -4px rgba(0, 0, 0, 0.08), 0 2px 8px -2px rgba(0, 0, 0, 0.04);
+        --shadow-card: 0 8px 32px -8px rgba(0, 0, 0, 0.1), 0 4px 16px -4px rgba(0, 0, 0, 0.06);
+        --shadow-elevated: 0 16px 48px -12px rgba(0, 0, 0, 0.12), 0 8px 24px -8px rgba(0, 0, 0, 0.08);
+      }
+      
       body {
-        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "Inter", sans-serif;
-        background-color: #f5f7f6;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", "Inter", system-ui, sans-serif;
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
         -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        min-height: 100vh;
       }
       
       /* Custom Scrollbar for macOS feel */
@@ -30,19 +40,91 @@
       }
       
       ::-webkit-scrollbar-thumb {
-        background: #d1d5db;
+        background: #cbd5e1;
         border-radius: 4px;
       }
       
       ::-webkit-scrollbar-thumb:hover {
-        background: #9ca3af;
+        background: #94a3b8;
       }
       
       .glass-panel {
-        background: rgba(255, 255, 255, 0.7);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.5);
+        background: var(--glass-bg);
+        backdrop-filter: blur(24px) saturate(180%);
+        -webkit-backdrop-filter: blur(24px) saturate(180%);
+        border: 1px solid var(--glass-border);
+        box-shadow: var(--shadow-soft);
+      }
+      
+      .glass-sidebar {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        border-right: 1px solid rgba(226, 232, 240, 0.6);
+      }
+      
+      .shadow-soft {
+        box-shadow: var(--shadow-soft);
+      }
+      
+      .shadow-card {
+        box-shadow: var(--shadow-card);
+      }
+      
+      .shadow-elevated {
+        box-shadow: var(--shadow-elevated);
+      }
+      
+      /* Loading animation */
+      
+      @keyframes shimmer {
+        0% { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
+      }
+      
+      @keyframes pulse-glow {
+        0%, 100% { opacity: 0.6; }
+        50% { opacity: 1; }
+      }
+      
+      @keyframes progress-wave {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+      }
+      
+      .loading-shimmer {
+        background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+        background-size: 200% 100%;
+        animation: shimmer 2s ease-in-out infinite;
+      }
+      
+      .progress-bar-wave::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+        animation: progress-wave 1.5s ease-in-out infinite;
+      }
+      
+      /* Hover transitions */
+      
+      .hover-lift {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+      
+      .hover-lift:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-elevated);
+      }
+      
+      /* Tag styles */
+      
+      .tag-pill {
+        transition: all 0.15s ease;
+      }
+      
+      .tag-pill:hover {
+        transform: scale(1.05);
       }
     </style>
 
@@ -56,12 +138,13 @@
     "@google/genai": "https://esm.sh/@google/genai@^1.38.0",
     "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
     "mammoth": "https://esm.sh/mammoth@1.8.0",
+    "xlsx": "https://esm.sh/xlsx@^0.18.5",
     "vite": "https://esm.sh/vite@^7.3.1",
     "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2"
   }
 }
 </script>
-  <script type="module" crossorigin src="./assets/index-DVbEcb8F.js"></script>
+  <script type="module" crossorigin src="./assets/index-C_In6mJP.js"></script>
 </head>
   <body>
     <div id="root"></div>
