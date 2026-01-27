@@ -15,6 +15,13 @@ const mockFiles = new Map<string, File>();
 
 export const getRootHandle = () => rootHandle;
 
+// Get the current folder path name for display
+export const getFolderPath = (): string => {
+  if (isMockMode) return '本地存储模式 (localStorage)';
+  if (!rootHandle) return '未授权';
+  return rootHandle.name;
+};
+
 /**
  * Request directory access from the user.
  * This MUST be called from a user gesture event handler.
@@ -23,33 +30,33 @@ export const requestDirectoryAccess = async (): Promise<boolean> => {
   try {
     // Feature detection
     if (!('showDirectoryPicker' in window)) {
-        console.warn("File System Access API not supported in this browser. Switching to Mock mode.");
-        isMockMode = true;
-        await initializeProjectStructure();
-        return true;
+      console.warn("File System Access API not supported in this browser. Switching to Mock mode.");
+      isMockMode = true;
+      await initializeProjectStructure();
+      return true;
     }
 
     rootHandle = await (window as any).showDirectoryPicker({
       mode: 'readwrite',
       id: 'talentos-root', // Helps browser remember the handle ID
     });
-    
+
     isMockMode = false;
     await initializeProjectStructure();
     return true;
   } catch (error: any) {
     // Handle iframe restriction or security error by falling back to mock mode
     if (error.name === 'SecurityError' || (error.message && error.message.includes('Cross origin sub frames'))) {
-       console.warn("File System Access API blocked (likely running in iframe). Switching to Mock/InMemory mode.");
-       isMockMode = true;
-       await initializeProjectStructure();
-       return true;
+      console.warn("File System Access API blocked (likely running in iframe). Switching to Mock/InMemory mode.");
+      isMockMode = true;
+      await initializeProjectStructure();
+      return true;
     }
-    
+
     console.error("Error accessing directory:", error);
     // User cancelled
     if (error.name === 'AbortError') return false;
-    
+
     return false;
   }
 };
@@ -74,7 +81,7 @@ const initializeProjectStructure = async () => {
   // 2. Create or Get db.json
   try {
     dbHandle = await rootHandle.getFileHandle('db.json', { create: true });
-    
+
     // Check if empty, if so, init with empty array
     const file = await dbHandle.getFile();
     if (file.size === 0) {
@@ -104,14 +111,14 @@ const ensureSchemaCompatibility = (rawData: any[]): Candidate[] => {
     yearsOfExperience: item.yearsOfExperience || '0个月',
     positionExperience: item.positionExperience || '',
     currentCompany: item.currentCompany || '',
-    
+
     // Handle rename 'role' -> 'recentRole' if legacy data exists
-    recentRole: item.recentRole || item.role || '候选人', 
-    
+    recentRole: item.recentRole || item.role || '候选人',
+
     location: item.location || '',
     factoryExperience: item.factoryExperience || '',
     contact: item.contact || '',
-    
+
     // Migration: New fields added in later versions
     intent: item.intent || '未知',
     isEmployed: item.isEmployed || '未知',
@@ -162,7 +169,7 @@ export const writeDatabase = async (data: Candidate[]): Promise<void> => {
   }
 
   if (!dbHandle) throw new Error("DB handle missing");
-  
+
   // Create a writable stream to the file.
   const writable = await dbHandle.createWritable();
   await writable.write(JSON.stringify(data, null, 2));
@@ -179,7 +186,7 @@ export const saveResumeFile = async (file: File, newName: string): Promise<strin
     let finalName = `${newName}.${ext}`;
     // Simple conflict resolution
     if (mockFiles.has(finalName)) {
-        finalName = `${newName}_${Date.now()}.${ext}`;
+      finalName = `${newName}_${Date.now()}.${ext}`;
     }
     mockFiles.set(finalName, file);
     return finalName;
@@ -190,7 +197,7 @@ export const saveResumeFile = async (file: File, newName: string): Promise<strin
   // Determine extension
   const ext = file.name.split('.').pop() || '';
   let finalName = `${newName}.${ext}`;
-  
+
   // Basic conflict resolution (append timestamp if exists)
   try {
     await resumesHandle.getFileHandle(finalName);
@@ -215,23 +222,23 @@ export const openResumeFile = async (filename: string) => {
   if (isMockMode) {
     const file = mockFiles.get(filename);
     if (file) {
-        const url = URL.createObjectURL(file);
-        window.open(url, '_blank');
-        setTimeout(() => URL.revokeObjectURL(url), 60000);
+      const url = URL.createObjectURL(file);
+      window.open(url, '_blank');
+      setTimeout(() => URL.revokeObjectURL(url), 60000);
     } else {
-        alert("Demo Mode: File not found in memory (files are lost on page refresh in demo mode).");
+      alert("Demo Mode: File not found in memory (files are lost on page refresh in demo mode).");
     }
     return;
   }
 
   if (!resumesHandle) throw new Error("Resumes directory missing");
-  
+
   try {
     const fileHandle = await resumesHandle.getFileHandle(filename);
     const file = await fileHandle.getFile();
     const url = URL.createObjectURL(file);
     window.open(url, '_blank');
-    
+
     // Cleanup URL after a delay (optional, but good practice)
     setTimeout(() => URL.revokeObjectURL(url), 60000);
   } catch (e) {
