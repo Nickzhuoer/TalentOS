@@ -104,6 +104,7 @@ const ensureSchemaCompatibility = (rawData: any[]): Candidate[] => {
 
   return rawData.map((item) => ({
     id: item.id || crypto.randomUUID(),
+    talentId: item.talentId || '',
     name: item.name || 'Unknown',
     gender: item.gender || '未知',
     age: item.age || '未知',

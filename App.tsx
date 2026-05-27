@@ -32,22 +32,19 @@ import { parseResumeWithGemini, parseTextWithGemini } from './services/geminiSer
 
 // --- Loading Screen Component ---
 const LoadingScreen = ({ progress }: { progress: number }) => (
-    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
-        <div className="flex flex-col items-center gap-8">
-            <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center text-white font-bold text-3xl shadow-2xl shadow-blue-300/50 animate-pulse">
-                T
-            </div>
+    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black">
+        <div className="flex flex-col items-center gap-8 animate-fade-rise">
             <div className="text-center">
-                <h2 className="text-xl font-semibold text-gray-800 mb-2">TalentOS</h2>
-                <p className="text-sm text-gray-500 mb-6">你的宝贝正在努力加载中...</p>
+                <h2 className="text-5xl font-serif text-white/90 tracking-widest mb-4">TalentOS</h2>
+                <p className="text-sm text-white/40 tracking-[0.3em] uppercase">LOADING</p>
             </div>
-            <div className="w-64 h-2 bg-gray-200 rounded-full overflow-hidden relative">
+            <div className="w-48 h-[1px] bg-white/10 rounded-full overflow-hidden relative mt-4">
                 <div
-                    className="h-full bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full transition-all duration-300 ease-out progress-bar-wave relative"
+                    className="h-full bg-white/50 rounded-full transition-all duration-300 ease-out progress-bar-wave relative"
                     style={{ width: `${progress}%` }}
                 />
             </div>
-            <p className="text-xs text-gray-400">{Math.round(progress)}%</p>
+            <p className="text-xs text-white/20">{Math.round(progress)}%</p>
         </div>
     </div>
 );
@@ -65,50 +62,54 @@ const EditModal = ({
     const [form, setForm] = useState<Candidate>({ ...candidate });
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm" onClick={onClose}>
-            <div className="bg-white rounded-2xl shadow-2xl w-[700px] max-h-[85vh] overflow-hidden" onClick={e => e.stopPropagation()}>
-                <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gradient-to-r from-blue-50 to-indigo-50">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm" onClick={onClose}>
+            <div className="bg-white rounded-2xl shadow-2xl w-[700px] max-h-[85vh] overflow-hidden animate-fade-rise border border-gray-100" onClick={e => e.stopPropagation()}>
+                <div className="p-6 border-b border-gray-100 flex justify-between items-center">
                     <h3 className="text-lg font-bold text-gray-800">编辑候选人信息</h3>
                     <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                        <X size={20} className="text-gray-500" />
+                        <X size={20} className="text-gray-400" />
                     </button>
                 </div>
-                <div className="p-6 overflow-y-auto max-h-[60vh] grid grid-cols-2 gap-4">
+                <div className="p-6 overflow-y-auto max-h-[60vh] grid grid-cols-2 gap-4 light-scroll">
                     <div>
-                        <label className="block text-xs font-semibold text-gray-500 mb-1">姓名</label>
-                        <input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+                        <label className="block text-xs font-semibold text-gray-400 mb-1">人才ID</label>
+                        <input value={form.talentId || '-'} disabled className="w-full light-input opacity-60 cursor-not-allowed" />
                     </div>
                     <div>
-                        <label className="block text-xs font-semibold text-gray-500 mb-1">最近职位</label>
-                        <input value={form.recentRole} onChange={e => setForm({ ...form, recentRole: e.target.value })} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+                        <label className="block text-xs font-semibold text-gray-400 mb-1">姓名</label>
+                        <input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} className="w-full light-input" />
                     </div>
                     <div>
-                        <label className="block text-xs font-semibold text-gray-500 mb-1">年龄</label>
-                        <input value={form.age} onChange={e => setForm({ ...form, age: e.target.value })} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+                        <label className="block text-xs font-semibold text-gray-400 mb-1">最近职位</label>
+                        <input value={form.recentRole} onChange={e => setForm({ ...form, recentRole: e.target.value })} className="w-full light-input" />
                     </div>
                     <div>
-                        <label className="block text-xs font-semibold text-gray-500 mb-1">性别</label>
-                        <input value={form.gender} onChange={e => setForm({ ...form, gender: e.target.value })} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+                        <label className="block text-xs font-semibold text-gray-400 mb-1">年龄</label>
+                        <input value={form.age} onChange={e => setForm({ ...form, age: e.target.value })} className="w-full light-input" />
                     </div>
                     <div>
-                        <label className="block text-xs font-semibold text-gray-500 mb-1">学历</label>
-                        <input value={form.education} onChange={e => setForm({ ...form, education: e.target.value })} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+                        <label className="block text-xs font-semibold text-gray-400 mb-1">性别</label>
+                        <input value={form.gender} onChange={e => setForm({ ...form, gender: e.target.value })} className="w-full light-input" />
                     </div>
                     <div>
-                        <label className="block text-xs font-semibold text-gray-500 mb-1">工作年限</label>
-                        <input value={form.yearsOfExperience} onChange={e => setForm({ ...form, yearsOfExperience: e.target.value })} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+                        <label className="block text-xs font-semibold text-gray-400 mb-1">学历</label>
+                        <input value={form.education} onChange={e => setForm({ ...form, education: e.target.value })} className="w-full light-input" />
+                    </div>
+                    <div>
+                        <label className="block text-xs font-semibold text-gray-400 mb-1">工作年限</label>
+                        <input value={form.yearsOfExperience} onChange={e => setForm({ ...form, yearsOfExperience: e.target.value })} className="w-full light-input" />
                     </div>
                     <div className="col-span-2">
-                        <label className="block text-xs font-semibold text-gray-500 mb-1">最近公司</label>
-                        <input value={form.currentCompany} onChange={e => setForm({ ...form, currentCompany: e.target.value })} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+                        <label className="block text-xs font-semibold text-gray-400 mb-1">最近公司</label>
+                        <input value={form.currentCompany} onChange={e => setForm({ ...form, currentCompany: e.target.value })} className="w-full light-input" />
                     </div>
                     <div className="col-span-2">
-                        <label className="block text-xs font-semibold text-gray-500 mb-1">岗位经验</label>
-                        <textarea value={form.positionExperience} onChange={e => setForm({ ...form, positionExperience: e.target.value })} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none h-20" />
+                        <label className="block text-xs font-semibold text-gray-400 mb-1">岗位经验</label>
+                        <textarea value={form.positionExperience} onChange={e => setForm({ ...form, positionExperience: e.target.value })} className="w-full light-input h-20" />
                     </div>
                     <div>
-                        <label className="block text-xs font-semibold text-gray-500 mb-1">意向</label>
-                        <select value={form.intent} onChange={e => setForm({ ...form, intent: e.target.value })} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                        <label className="block text-xs font-semibold text-gray-400 mb-1">意向</label>
+                        <select value={form.intent} onChange={e => setForm({ ...form, intent: e.target.value })} className="w-full light-input">
                             <option value="未知">未知</option>
                             <option value="在职，稳定">在职，稳定</option>
                             <option value="在职，看机会">在职，看机会</option>
@@ -117,25 +118,25 @@ const EditModal = ({
                         </select>
                     </div>
                     <div>
-                        <label className="block text-xs font-semibold text-gray-500 mb-1">地区</label>
-                        <input value={form.location} onChange={e => setForm({ ...form, location: e.target.value })} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+                        <label className="block text-xs font-semibold text-gray-400 mb-1">地区</label>
+                        <input value={form.location} onChange={e => setForm({ ...form, location: e.target.value })} className="w-full light-input" />
                     </div>
                     <div>
-                        <label className="block text-xs font-semibold text-gray-500 mb-1">联系方式</label>
-                        <input value={form.contact} onChange={e => setForm({ ...form, contact: e.target.value })} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+                        <label className="block text-xs font-semibold text-gray-400 mb-1">联系方式</label>
+                        <input value={form.contact} onChange={e => setForm({ ...form, contact: e.target.value })} className="w-full light-input" />
                     </div>
                     <div>
-                        <label className="block text-xs font-semibold text-gray-500 mb-1">来源</label>
-                        <input value={form.source} onChange={e => setForm({ ...form, source: e.target.value })} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+                        <label className="block text-xs font-semibold text-gray-400 mb-1">来源</label>
+                        <input value={form.source} onChange={e => setForm({ ...form, source: e.target.value })} className="w-full light-input" />
                     </div>
                     <div className="col-span-2">
-                        <label className="block text-xs font-semibold text-gray-500 mb-1">备注</label>
-                        <textarea value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none h-20" />
+                        <label className="block text-xs font-semibold text-gray-400 mb-1">备注</label>
+                        <textarea value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} className="w-full light-input h-20" />
                     </div>
                 </div>
-                <div className="p-6 border-t border-gray-100 flex justify-end gap-3 bg-gray-50">
-                    <button onClick={onClose} className="px-5 py-2.5 border border-gray-200 rounded-xl text-gray-600 hover:bg-gray-100 font-medium transition-colors">取消</button>
-                    <button onClick={() => onSave(form)} className="px-5 py-2.5 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 transition-colors shadow-lg shadow-blue-200 flex items-center gap-2">
+                <div className="p-6 border-t border-gray-100 flex justify-end gap-3">
+                    <button onClick={onClose} className="px-5 py-2.5 border border-gray-200 rounded-xl text-gray-500 hover:bg-gray-50 font-medium transition-colors">取消</button>
+                    <button onClick={() => onSave(form)} className="bg-indigo-500 hover:bg-indigo-600 px-5 py-2.5 rounded-xl font-medium transition-colors flex items-center gap-2 text-white shadow-lg shadow-indigo-200">
                         <Save size={18} /> 保存修改
                     </button>
                 </div>
@@ -146,7 +147,7 @@ const EditModal = ({
 
 // --- Sidebar Component ---
 const Sidebar = ({ activeTab, setActiveTab, userAvatar }: { activeTab: string, setActiveTab: (t: string) => void, userAvatar: string | null }) => (
-    <div className="w-64 h-full glass-sidebar flex flex-col flex-shrink-0 z-10">
+    <div className="w-64 h-full glass-sidebar-light flex flex-col flex-shrink-0 z-10">
         <div className="p-6 flex items-center gap-3">
             <img
                 src="/logo.png"
@@ -157,12 +158,12 @@ const Sidebar = ({ activeTab, setActiveTab, userAvatar }: { activeTab: string, s
                     e.currentTarget.nextElementSibling?.classList.remove('hidden');
                 }}
             />
-            <div className="w-11 h-11 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg hidden">
+            <div className="w-11 h-11 bg-indigo-500 rounded-xl flex items-center justify-center text-white font-bold text-xl hidden">
                 T
             </div>
             <div>
-                <h1 className="font-bold text-gray-900 leading-tight text-lg">TalentOS</h1>
-                <p className="text-xs text-gray-500 font-medium">智能人才库</p>
+                <h1 className="font-serif text-gray-900 leading-tight text-xl">TalentOS</h1>
+                <p className="text-xs text-gray-400 font-medium">智能人才库</p>
             </div>
         </div>
 
@@ -176,8 +177,8 @@ const Sidebar = ({ activeTab, setActiveTab, userAvatar }: { activeTab: string, s
                     key={item.id}
                     onClick={() => setActiveTab(item.id)}
                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 font-medium ${activeTab === item.id
-                        ? 'bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-600 shadow-soft border border-blue-100/50'
-                        : 'text-gray-500 hover:bg-white/60 hover:text-gray-900'
+                        ? 'bg-indigo-50 text-indigo-600 border border-indigo-100'
+                        : 'text-gray-400 hover:bg-gray-50 hover:text-gray-700'
                         }`}
                 >
                     <item.icon size={20} />
@@ -186,29 +187,29 @@ const Sidebar = ({ activeTab, setActiveTab, userAvatar }: { activeTab: string, s
             ))}
         </nav>
 
-        <div className="p-5 border-t border-gray-200/50 mt-2">
-            <div className="flex items-center gap-3 p-2 rounded-xl hover:bg-white/60 transition-colors">
+        <div className="p-5 border-t border-gray-100 mt-2">
+            <div className="flex items-center gap-3 p-2 rounded-xl hover:bg-gray-50 transition-colors">
                 {userAvatar ? (
-                    <img src={userAvatar} alt="Avatar" className="w-10 h-10 rounded-full object-cover border-2 border-white shadow-soft" />
+                    <img src={userAvatar} alt="Avatar" className="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm" />
                 ) : (
                     <>
                         <img
                             src="/avatar.png"
                             alt="User Avatar"
-                            className="w-10 h-10 rounded-full object-cover border-2 border-white shadow-soft"
+                            className="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm"
                             onError={(e) => {
                                 e.currentTarget.style.display = 'none';
                                 e.currentTarget.nextElementSibling?.classList.remove('hidden');
                             }}
                         />
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white font-bold hidden shadow-soft">
+                        <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold hidden">
                             陈
                         </div>
                     </>
                 )}
                 <div className="overflow-hidden">
-                    <p className="text-sm font-bold text-gray-900 truncate">陈哈哈</p>
-                    <p className="text-xs text-gray-500">已登录</p>
+                    <p className="text-sm font-bold text-gray-800 truncate">陈哈哈</p>
+                    <p className="text-xs text-gray-400">已登录</p>
                 </div>
             </div>
         </div>
@@ -217,13 +218,13 @@ const Sidebar = ({ activeTab, setActiveTab, userAvatar }: { activeTab: string, s
 
 const StatusBadge = ({ status }: { status: CandidateStatus }) => {
     const styles = {
-        [CandidateStatus.NEW]: "bg-green-100 text-green-700",
-        [CandidateStatus.SCREENING]: "bg-blue-100 text-blue-700",
-        [CandidateStatus.INTERVIEWING]: "bg-purple-100 text-purple-700",
-        [CandidateStatus.OFFER_SENT]: "bg-orange-100 text-orange-700",
-        [CandidateStatus.HIRED]: "bg-emerald-600 text-white",
-        [CandidateStatus.REJECTED]: "bg-red-100 text-red-700",
-        [CandidateStatus.OPEN_TO_WORK]: "bg-teal-50 text-teal-600 border border-teal-100"
+        [CandidateStatus.NEW]: "bg-green-50 text-green-600 border border-green-200",
+        [CandidateStatus.SCREENING]: "bg-blue-50 text-blue-600 border border-blue-200",
+        [CandidateStatus.INTERVIEWING]: "bg-purple-50 text-purple-600 border border-purple-200",
+        [CandidateStatus.OFFER_SENT]: "bg-orange-50 text-orange-600 border border-orange-200",
+        [CandidateStatus.HIRED]: "bg-emerald-500 text-white border border-emerald-500",
+        [CandidateStatus.REJECTED]: "bg-red-50 text-red-600 border border-red-200",
+        [CandidateStatus.OPEN_TO_WORK]: "bg-teal-50 text-teal-600 border border-teal-200"
     };
 
     return (
@@ -243,9 +244,11 @@ const App: React.FC = () => {
     const [candidates, setCandidates] = useState<Candidate[]>([]);
     const [reconnectNeeded, setReconnectNeeded] = useState(false);
     const [userAvatar, setUserAvatar] = useState<string | null>(null);
+    const [loginError, setLoginError] = useState('');
 
     // Management State
     const [searchTerm, setSearchTerm] = useState('');
+    const [idSearchTerm, setIdSearchTerm] = useState('');
     const [editingId, setEditingId] = useState<string | null>(null);
     const [editForm, setEditForm] = useState<Candidate | null>(null);
     const [modalCandidate, setModalCandidate] = useState<Candidate | null>(null);
@@ -273,6 +276,10 @@ const App: React.FC = () => {
     const [stagingFile, setStagingFile] = useState<File | null>(null);
     const [inputText, setInputText] = useState('');
     const [isProcessing, setIsProcessing] = useState(false);
+
+    // Age Correction State
+    const [showAgeCorrection, setShowAgeCorrection] = useState(false);
+    const [ageCorrectionDate, setAgeCorrectionDate] = useState('');
 
     // Loading animation effect
     useEffect(() => {
@@ -324,6 +331,7 @@ const App: React.FC = () => {
             'AI画像': c.aiPersona,
             '来源': c.source,
             '备注': c.notes,
+            '人才ID': c.talentId || '',
             '添加时间': c.dateAdded,
             '更新时间': c.lastModified
         }));
@@ -332,6 +340,56 @@ const App: React.FC = () => {
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, '人才库');
         XLSX.writeFile(wb, `TalentOS_人才库_${new Date().toISOString().split('T')[0]}.xlsx`);
+    };
+
+    // Age Correction Handler
+    const handleAgeCorrection = async () => {
+        if (!ageCorrectionDate || ageCorrectionDate.length !== 8) {
+            alert('请输入正确的日期格式，例如 20270601');
+            return;
+        }
+        const currentYear = parseInt(ageCorrectionDate.substring(0, 4));
+        const currentMonth = parseInt(ageCorrectionDate.substring(4, 6));
+        const currentDay = parseInt(ageCorrectionDate.substring(6, 8));
+        const currentDate = new Date(currentYear, currentMonth - 1, currentDay);
+
+        let updatedCount = 0;
+        const newList = candidates.map(c => {
+            if (!c.talentId || !c.talentId.includes('#')) return c;
+            const entryDateStr = c.talentId.split('#')[0];
+            if (entryDateStr.length !== 8) return c;
+
+            const entryYear = parseInt(entryDateStr.substring(0, 4));
+            const entryMonth = parseInt(entryDateStr.substring(4, 6));
+            const entryDay = parseInt(entryDateStr.substring(6, 8));
+            const entryDate = new Date(entryYear, entryMonth - 1, entryDay);
+
+            // Calculate full years difference
+            let yearDiff = currentDate.getFullYear() - entryDate.getFullYear();
+            const monthDiff = currentDate.getMonth() - entryDate.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && currentDate.getDate() < entryDate.getDate())) {
+                yearDiff--;
+            }
+
+            if (yearDiff < 1) return c;
+
+            // Extract age number and optional suffix
+            const ageMatch = c.age.match(/^(\d+)(.*)$/);
+            if (!ageMatch) return c;
+
+            const originalAge = parseInt(ageMatch[1]);
+            const suffix = ageMatch[2] || ''; // e.g. "（估测）"
+            const newAge = originalAge + yearDiff;
+
+            updatedCount++;
+            return { ...c, age: `${newAge}${suffix}`, lastModified: new Date().toLocaleString('zh-CN') };
+        });
+
+        setCandidates(newList);
+        await fileSystem.writeDatabase(newList);
+        setShowAgeCorrection(false);
+        setAgeCorrectionDate('');
+        alert(`年龄校正完成，共更新 ${updatedCount} 位候选人的年龄。`);
     };
 
     // Modal Save Handler
@@ -449,10 +507,24 @@ const App: React.FC = () => {
                 savedFileName = await fileSystem.saveResumeFile(stagingFile, stagingData.name || 'Unknown');
             }
 
-            // 2. Create Record
+            // 2. Generate Talent ID
+            const now = new Date();
+            const dateStr = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}`;
+            const sameDayCount = candidates.filter(c => c.talentId && c.talentId.startsWith(dateStr + '#')).length;
+            const seqNum = String(sameDayCount + 1).padStart(2, '0');
+            const talentId = `${dateStr}#${seqNum}`;
+
+            // 3. Derive isEmployed from intent
+            const intent = stagingData.intent || '未知';
+            let derivedEmployed = '未知';
+            if (intent.startsWith('在职')) derivedEmployed = '在职';
+            else if (intent.startsWith('离职')) derivedEmployed = '离职';
+
+            // 4. Create Record
             const timestamp = new Date().toLocaleString('zh-CN');
             const newRecord: Candidate = {
                 id: crypto.randomUUID(),
+                talentId,
                 name: stagingData.name || '未知姓名',
                 gender: stagingData.gender || '未知',
                 age: stagingData.age || '未知',
@@ -466,8 +538,8 @@ const App: React.FC = () => {
 
                 // New Fields Default
                 recentRole: stagingData.recentRole || '候选人',
-                intent: stagingData.intent || '未知',
-                isEmployed: stagingData.isEmployed || '未知',
+                intent: intent,
+                isEmployed: derivedEmployed,
                 source: stagingData.source || '',
                 notes: stagingData.notes || '',
                 aiPersona: stagingData.aiPersona || '',
@@ -540,21 +612,19 @@ const App: React.FC = () => {
     // --- Views ---
 
     const renderLogin = () => (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 relative overflow-hidden">
-            <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-200 rounded-full blur-[100px] opacity-30"></div>
-            <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-200 rounded-full blur-[100px] opacity-30"></div>
+        <div className="min-h-screen flex items-center justify-center bg-black relative overflow-hidden">
+            <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-600 rounded-full blur-[150px] opacity-10"></div>
+            <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-600 rounded-full blur-[150px] opacity-10"></div>
 
-            <div className="bg-white p-8 rounded-2xl shadow-xl w-[480px] z-10 border border-white/50">
+            <div className="liquid-glass p-8 rounded-2xl w-[480px] z-10 animate-fade-rise">
                 <div className="flex justify-center mb-6">
-                    <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
-                        <RefreshCw className="text-blue-600 animate-spin-slow" size={32} />
-                    </div>
+                    <h1 className="text-4xl font-serif text-white/90">TalentOS</h1>
                 </div>
 
-                <h2 className="text-2xl font-bold text-center text-gray-900 mb-2">
-                    {reconnectNeeded ? "欢迎回来，陈哈哈" : "TalentOS 智能招聘"}
+                <h2 className="text-xl text-center text-white/80 mb-2">
+                    {reconnectNeeded ? "欢迎回来，陈哈哈" : "智能招聘平台"}
                 </h2>
-                <p className="text-center text-gray-500 mb-6 px-4 text-sm leading-relaxed">
+                <p className="text-center text-white/40 mb-6 px-4 text-sm leading-relaxed">
                     {reconnectNeeded
                         ? "由于浏览器安全策略，刷新后需重新授权文件夹访问。"
                         : "本应用为离线模式。请配置 API Key，然后点击下方登录按钮选择本地文件夹启动。"}
@@ -564,70 +634,85 @@ const App: React.FC = () => {
                     <form onSubmit={(e) => {
                         e.preventDefault();
                         const form = e.target as HTMLFormElement;
+                        const pwd = form.password.value;
+                        if (pwd !== 'cjh') {
+                            setLoginError('密码错误，拒绝访问');
+                            return;
+                        }
+                        setLoginError('');
                         handleLogin(form.apiKey.value);
                     }} className="space-y-6">
-                        <div className="space-y-4 p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <div className="space-y-4 p-4 bg-white/[0.03] rounded-xl border border-white/5">
                             <div>
-                                <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">API KEY (Gemini)</label>
-                                <input name="apiKey" type="password" placeholder="请输入您的 Key" className="w-full mt-1 p-2 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all text-sm" required />
+                                <label className="text-xs font-bold text-white/30 uppercase tracking-wider">API KEY (Gemini)</label>
+                                <input name="apiKey" type="password" placeholder="请输入您的 Key" className="w-full mt-1 dark-input text-sm" required />
                             </div>
-                            {/* Removed Username Input */}
+                            <div>
+                                <label className="text-xs font-bold text-white/30 uppercase tracking-wider">密码</label>
+                                <input name="password" type="password" placeholder="请输入访问密码" className="w-full mt-1 dark-input text-sm" required />
+                            </div>
                         </div>
 
-                        <div className="pt-2 border-t border-gray-100">
-                            <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-200 group">
+                        {loginError && (
+                            <div className="flex items-center gap-2 px-4 py-3 bg-red-500/10 border border-red-500/20 rounded-xl">
+                                <AlertCircle size={16} className="text-red-400" />
+                                <span className="text-sm text-red-400 font-medium">{loginError}</span>
+                            </div>
+                        )}
+
+                        <div className="pt-2 border-t border-white/5">
+                            <button type="submit" className="w-full liquid-glass text-white/90 font-bold py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 group hover:scale-[1.02]">
                                 <span>登录并启动</span>
                                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                             </button>
-                            <p className="text-xs text-center text-gray-400 mt-3">点击登录后请选择 Google Drive 同步目录或本地文件夹</p>
+                            <p className="text-xs text-center text-white/25 mt-3">点击登录后请选择本地文件夹作为存储目录</p>
                         </div>
                     </form>
                 ) : (
                     <div className="space-y-4">
                         {/* User Info with Avatar */}
-                        <div className="p-4 bg-gray-50 rounded-xl border border-gray-100 flex items-center gap-4">
+                        <div className="p-4 bg-white/[0.03] rounded-xl border border-white/5 flex items-center gap-4">
                             {userAvatar ? (
-                                <img src={userAvatar} alt="User Avatar" className="w-14 h-14 rounded-full object-cover border-2 border-white shadow-lg" />
+                                <img src={userAvatar} alt="User Avatar" className="w-14 h-14 rounded-full object-cover border-2 border-white/10" />
                             ) : (
                                 <>
                                     <img
                                         src="/avatar.png"
                                         alt="User Avatar"
-                                        className="w-14 h-14 rounded-full object-cover border-2 border-white shadow-lg"
+                                        className="w-14 h-14 rounded-full object-cover border-2 border-white/10"
                                         onError={(e) => {
                                             e.currentTarget.style.display = 'none';
                                             e.currentTarget.nextElementSibling?.classList.remove('hidden');
                                         }}
                                     />
-                                    <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white font-bold text-xl shadow-lg hidden">
+                                    <div className="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center text-white font-bold text-xl hidden">
                                         陈
                                     </div>
                                 </>
                             )}
                             <div>
-                                <p className="font-bold text-gray-900 text-lg">陈哈哈</p>
-                                <p className="text-sm text-gray-500">会话已过期，需重新连接</p>
+                                <p className="font-bold text-white/90 text-lg">陈哈哈</p>
+                                <p className="text-sm text-white/40">会话已过期，需重新连接</p>
                             </div>
                         </div>
 
                         {/* Folder Path Display */}
-                        <div className="p-4 bg-blue-50 rounded-xl border border-blue-100">
-                            <label className="block text-xs font-bold text-blue-600 mb-2">上次使用的文件夹</label>
-                            <div className="flex items-center gap-2 text-sm text-blue-700">
-                                <FolderOpen size={18} className="text-blue-500" />
+                        <div className="p-4 bg-white/[0.03] rounded-xl border border-white/5">
+                            <label className="block text-xs font-bold text-white/40 mb-2">上次使用的文件夹</label>
+                            <div className="flex items-center gap-2 text-sm text-white/60">
+                                <FolderOpen size={18} className="text-white/40" />
                                 <span className="font-medium">{folderPath === '未授权' ? '需要重新授权' : folderPath}</span>
                             </div>
                         </div>
 
                         {/* Buttons */}
                         <div className="space-y-3 pt-2">
-                            <button onClick={handleReconnect} className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-200">
+                            <button onClick={handleReconnect} className="w-full liquid-glass text-white/90 font-bold py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 hover:scale-[1.02]">
                                 <FolderOpen size={20} />
                                 重新选择文件夹
                             </button>
                             <button
                                 onClick={async () => {
-                                    // Try to use cached folder handle if available
                                     const success = await fileSystem.requestDirectoryAccess();
                                     if (success) {
                                         setReconnectNeeded(false);
@@ -635,12 +720,12 @@ const App: React.FC = () => {
                                         loadData();
                                     }
                                 }}
-                                className="w-full bg-white border-2 border-gray-200 hover:border-blue-400 hover:bg-blue-50 text-gray-700 font-bold py-3.5 rounded-xl transition-all flex items-center justify-center gap-2"
+                                className="w-full border border-white/10 hover:border-white/20 hover:bg-white/5 text-white/60 font-bold py-3.5 rounded-xl transition-all flex items-center justify-center gap-2"
                             >
                                 <LogIn size={20} />
                                 直接登录（使用上次文件夹）
                             </button>
-                            <button onClick={() => { localStorage.clear(); window.location.reload(); }} className="w-full text-red-500 text-sm font-medium py-2 hover:bg-red-50 rounded-lg flex items-center justify-center gap-2">
+                            <button onClick={() => { localStorage.clear(); window.location.reload(); }} className="w-full text-red-400/60 text-sm font-medium py-2 hover:bg-red-500/10 rounded-lg flex items-center justify-center gap-2">
                                 <LogOut size={16} /> 退出登录
                             </button>
                         </div>
@@ -652,26 +737,26 @@ const App: React.FC = () => {
 
     const renderEntry = () => (
         <div className="max-w-5xl mx-auto space-y-6 pb-20">
-            <h2 className="text-2xl font-bold text-gray-800">信息录入</h2>
+            <h2 className="text-3xl font-serif text-gray-800">信息录入</h2>
 
             {/* Input Mode Tabs */}
             <div className="flex gap-4 mb-6">
-                <button onClick={() => setEntryMode('text')} className={`flex-1 py-4 rounded-xl border transition-all flex flex-col items-center gap-2 ${entryMode === 'text' ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-gray-200 bg-white hover:border-gray-300'}`}>
+                <button onClick={() => setEntryMode('text')} className={`flex-1 py-4 rounded-xl border transition-all flex flex-col items-center gap-2 ${entryMode === 'text' ? 'border-indigo-200 bg-indigo-50 text-indigo-600' : 'border-gray-100 bg-white/60 text-gray-400 hover:border-gray-200 hover:text-gray-600'}`}>
                     <Type size={24} />
                     <span className="font-semibold">文字录入</span>
                 </button>
-                <button onClick={() => setEntryMode('file')} className={`flex-1 py-4 rounded-xl border transition-all flex flex-col items-center gap-2 ${entryMode === 'file' ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-gray-200 bg-white hover:border-gray-300'}`}>
+                <button onClick={() => setEntryMode('file')} className={`flex-1 py-4 rounded-xl border transition-all flex flex-col items-center gap-2 ${entryMode === 'file' ? 'border-indigo-200 bg-indigo-50 text-indigo-600' : 'border-gray-100 bg-white/60 text-gray-400 hover:border-gray-200 hover:text-gray-600'}`}>
                     <UploadCloud size={24} />
                     <span className="font-semibold">文件上传 (PDF/Word)</span>
                 </button>
             </div>
 
             {/* Input Area */}
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 min-h-[200px] flex flex-col justify-center">
+            <div className="light-glass p-6 rounded-2xl min-h-[200px] flex flex-col justify-center">
                 {entryMode === 'text' && (
                     <div className="space-y-4">
                         <textarea
-                            className="w-full h-40 p-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none"
+                            className="w-full h-40 light-input resize-none"
                             placeholder="在此粘贴简历文本或输入候选人信息..."
                             value={inputText}
                             onChange={(e) => setInputText(e.target.value)}
@@ -679,7 +764,7 @@ const App: React.FC = () => {
                         <button
                             onClick={handleParse}
                             disabled={isProcessing || !inputText}
-                            className="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold disabled:opacity-50 flex items-center justify-center gap-2"
+                            className="w-full bg-indigo-500 hover:bg-indigo-600 text-white py-3 rounded-xl font-semibold disabled:opacity-30 flex items-center justify-center gap-2 transition-colors shadow-lg shadow-indigo-200"
                         >
                             {isProcessing ? <RefreshCw className="animate-spin" /> : <RefreshCw />}
                             开始AI解析
@@ -689,7 +774,7 @@ const App: React.FC = () => {
 
                 {(entryMode === 'file') && (
                     <div className="text-center space-y-4">
-                        <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 hover:bg-gray-50 transition-colors relative">
+                        <div className="border border-dashed border-gray-200 rounded-xl p-8 hover:bg-gray-50/50 transition-colors relative">
                             <input
                                 type="file"
                                 accept=".pdf,.doc,.docx,.txt"
@@ -698,14 +783,14 @@ const App: React.FC = () => {
                             />
                             <div className="pointer-events-none">
                                 {isProcessing ? (
-                                    <div className="flex flex-col items-center gap-3 text-blue-600">
+                                    <div className="flex flex-col items-center gap-3 text-gray-500">
                                         <RefreshCw className="animate-spin w-10 h-10" />
                                         <p>正在分析文件内容...</p>
                                     </div>
                                 ) : (
-                                    <div className="flex flex-col items-center gap-2 text-gray-500">
+                                    <div className="flex flex-col items-center gap-2 text-gray-400">
                                         <FileText className="w-12 h-12 mb-2" />
-                                        <p className="font-medium text-lg text-gray-700">点击选择或拖入文件</p>
+                                        <p className="font-medium text-lg text-gray-600">点击选择或拖入文件</p>
                                         <p className="text-sm opacity-70">支持 PDF, Word</p>
                                     </div>
                                 )}
@@ -717,52 +802,52 @@ const App: React.FC = () => {
 
             {/* Result Form */}
             {stagingData && (
-                <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 animate-in fade-in slide-in-from-bottom-4">
+                <div className="light-glass p-6 rounded-2xl animate-fade-rise">
                     <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
                         <h3 className="text-lg font-bold text-gray-800 flex items-center gap-2">
                             <CheckCircle className="text-green-500" size={20} /> 解析结果确认
                         </h3>
-                        <span className="text-sm text-gray-500">请核对并完善信息后入库</span>
+                        <span className="text-sm text-gray-400">请核对并完善信息后入库</span>
                     </div>
 
                     <div className="grid grid-cols-4 gap-6">
                         <div className="col-span-1">
-                            <label className="block text-xs font-bold text-gray-500 uppercase mb-1">姓名</label>
-                            <input value={stagingData.name || ''} onChange={e => setStagingData({ ...stagingData, name: e.target.value })} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none" />
+                            <label className="block text-xs font-bold text-gray-400 uppercase mb-1">姓名</label>
+                            <input value={stagingData.name || ''} onChange={e => setStagingData({ ...stagingData, name: e.target.value })} className="w-full light-input" />
                         </div>
                         <div className="col-span-1">
-                            <label className="block text-xs font-bold text-gray-500 uppercase mb-1">最近职位</label>
-                            <input value={stagingData.recentRole || ''} onChange={e => setStagingData({ ...stagingData, recentRole: e.target.value })} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none" />
+                            <label className="block text-xs font-bold text-gray-400 uppercase mb-1">最近职位</label>
+                            <input value={stagingData.recentRole || ''} onChange={e => setStagingData({ ...stagingData, recentRole: e.target.value })} className="w-full light-input" />
                         </div>
                         <div className="col-span-1">
-                            <label className="block text-xs font-bold text-gray-500 uppercase mb-1">年龄</label>
-                            <input value={stagingData.age || ''} onChange={e => setStagingData({ ...stagingData, age: e.target.value })} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none" />
+                            <label className="block text-xs font-bold text-gray-400 uppercase mb-1">年龄</label>
+                            <input value={stagingData.age || ''} onChange={e => setStagingData({ ...stagingData, age: e.target.value })} className="w-full light-input" />
                         </div>
                         <div className="col-span-1">
-                            <label className="block text-xs font-bold text-gray-500 uppercase mb-1">性别</label>
-                            <input value={stagingData.gender || ''} onChange={e => setStagingData({ ...stagingData, gender: e.target.value })} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none" />
+                            <label className="block text-xs font-bold text-gray-400 uppercase mb-1">性别</label>
+                            <input value={stagingData.gender || ''} onChange={e => setStagingData({ ...stagingData, gender: e.target.value })} className="w-full light-input" />
                         </div>
 
                         <div className="col-span-1">
-                            <label className="block text-xs font-bold text-gray-500 uppercase mb-1">学历</label>
-                            <input value={stagingData.education || ''} onChange={e => setStagingData({ ...stagingData, education: e.target.value })} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none" />
+                            <label className="block text-xs font-bold text-gray-400 uppercase mb-1">学历</label>
+                            <input value={stagingData.education || ''} onChange={e => setStagingData({ ...stagingData, education: e.target.value })} className="w-full light-input" />
                         </div>
                         <div className="col-span-1">
-                            <label className="block text-xs font-bold text-gray-500 uppercase mb-1">工作年限 (计算值)</label>
-                            <input value={stagingData.yearsOfExperience || ''} onChange={e => setStagingData({ ...stagingData, yearsOfExperience: e.target.value })} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none" placeholder="X年X个月" />
+                            <label className="block text-xs font-bold text-gray-400 uppercase mb-1">工作年限 (计算值)</label>
+                            <input value={stagingData.yearsOfExperience || ''} onChange={e => setStagingData({ ...stagingData, yearsOfExperience: e.target.value })} className="w-full light-input" placeholder="X年X个月" />
                         </div>
                         <div className="col-span-2">
-                            <label className="block text-xs font-bold text-gray-500 uppercase mb-1">最近公司</label>
-                            <input value={stagingData.currentCompany || ''} onChange={e => setStagingData({ ...stagingData, currentCompany: e.target.value })} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none" />
+                            <label className="block text-xs font-bold text-gray-400 uppercase mb-1">最近公司</label>
+                            <input value={stagingData.currentCompany || ''} onChange={e => setStagingData({ ...stagingData, currentCompany: e.target.value })} className="w-full light-input" />
                         </div>
 
                         <div className="col-span-4">
-                            <label className="block text-xs font-bold text-gray-500 uppercase mb-1">岗位经验 (历史职位与时间)</label>
-                            <textarea value={stagingData.positionExperience || ''} onChange={e => setStagingData({ ...stagingData, positionExperience: e.target.value })} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none h-20" placeholder="例如：软件工程师 (2020-2022); 高级工程师 (2022-至今)" />
+                            <label className="block text-xs font-bold text-gray-400 uppercase mb-1">岗位经验 (历史职位与时间)</label>
+                            <textarea value={stagingData.positionExperience || ''} onChange={e => setStagingData({ ...stagingData, positionExperience: e.target.value })} className="w-full light-input h-20" placeholder="例如：软件工程师 (2020-2022); 高级工程师 (2022-至今)" />
                         </div>
 
                         <div className="col-span-2">
-                            <label className="block text-xs font-bold text-gray-500 uppercase mb-1">意向</label>
+                            <label className="block text-xs font-bold text-gray-400 uppercase mb-1">意向</label>
                             <select
                                 value={stagingData.intent || '未知'}
                                 onChange={e => {
@@ -775,7 +860,7 @@ const App: React.FC = () => {
 
                                     setStagingData({ ...stagingData, intent: val, isEmployed: empStatus });
                                 }}
-                                className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none"
+                                className="w-full light-input"
                             >
                                 <option value="未知">未知</option>
                                 <option value="在职，稳定">在职，稳定</option>
@@ -785,8 +870,8 @@ const App: React.FC = () => {
                             </select>
                         </div>
                         <div className="col-span-2">
-                            <label className="block text-xs font-bold text-gray-500 uppercase mb-1">是否在职 (自动推导)</label>
-                            <select value={stagingData.isEmployed || '未知'} onChange={e => setStagingData({ ...stagingData, isEmployed: e.target.value })} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none">
+                            <label className="block text-xs font-bold text-gray-400 uppercase mb-1">是否在职 (自动推导)</label>
+                            <select value={stagingData.isEmployed || '未知'} onChange={e => setStagingData({ ...stagingData, isEmployed: e.target.value })} className="w-full light-input">
                                 <option value="未知">未知</option>
                                 <option value="在职">在职</option>
                                 <option value="离职">离职</option>
@@ -794,45 +879,45 @@ const App: React.FC = () => {
                         </div>
 
                         <div className="col-span-2">
-                            <label className="block text-xs font-bold text-gray-500 uppercase mb-1">所在地区</label>
-                            <input value={stagingData.location || ''} onChange={e => setStagingData({ ...stagingData, location: e.target.value })} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none" />
+                            <label className="block text-xs font-bold text-gray-400 uppercase mb-1">所在地区</label>
+                            <input value={stagingData.location || ''} onChange={e => setStagingData({ ...stagingData, location: e.target.value })} className="w-full light-input" />
                         </div>
                         <div className="col-span-2">
-                            <label className="block text-xs font-bold text-gray-500 uppercase mb-1">联系方式</label>
-                            <input value={stagingData.contact || ''} onChange={e => setStagingData({ ...stagingData, contact: e.target.value })} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none" />
+                            <label className="block text-xs font-bold text-gray-400 uppercase mb-1">联系方式</label>
+                            <input value={stagingData.contact || ''} onChange={e => setStagingData({ ...stagingData, contact: e.target.value })} className="w-full light-input" />
                         </div>
 
                         {/* Adjusted Fields Row */}
                         <div className="col-span-2">
-                            <label className="block text-xs font-bold text-gray-500 uppercase mb-1">工厂经验/特殊技能</label>
-                            <input value={stagingData.factoryExperience || ''} onChange={e => setStagingData({ ...stagingData, factoryExperience: e.target.value })} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none" placeholder="简短描述..." />
+                            <label className="block text-xs font-bold text-gray-400 uppercase mb-1">工厂经验/特殊技能</label>
+                            <input value={stagingData.factoryExperience || ''} onChange={e => setStagingData({ ...stagingData, factoryExperience: e.target.value })} className="w-full light-input" placeholder="简短描述..." />
                         </div>
                         <div className="col-span-2">
-                            <label className="block text-xs font-bold text-gray-500 uppercase mb-1">人才来源</label>
-                            <input value={stagingData.source || ''} onChange={e => setStagingData({ ...stagingData, source: e.target.value })} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none" placeholder="例如：Boss直聘、内推" />
+                            <label className="block text-xs font-bold text-gray-400 uppercase mb-1">人才来源</label>
+                            <input value={stagingData.source || ''} onChange={e => setStagingData({ ...stagingData, source: e.target.value })} className="w-full light-input" placeholder="例如：Boss直聘、内推" />
                         </div>
 
                         <div className="col-span-4">
-                            <label className="block text-xs font-bold text-gray-500 uppercase mb-1">备注</label>
-                            <textarea value={stagingData.notes || ''} onChange={e => setStagingData({ ...stagingData, notes: e.target.value })} className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none h-20" placeholder="电话沟通记录..." />
+                            <label className="block text-xs font-bold text-gray-400 uppercase mb-1">备注</label>
+                            <textarea value={stagingData.notes || ''} onChange={e => setStagingData({ ...stagingData, notes: e.target.value })} className="w-full light-input h-20" placeholder="电话沟通记录..." />
                         </div>
 
                         {/* AI Persona Section */}
                         <div className="col-span-4 mt-2">
                             <div className="bg-purple-50 p-4 rounded-xl border border-purple-100">
-                                <label className="block text-xs font-bold text-purple-600 uppercase mb-2 flex items-center gap-2">
+                                <label className="block text-xs font-bold text-purple-500 uppercase mb-2 flex items-center gap-2">
                                     <Users size={14} /> AI 候选人画像
                                 </label>
                                 <textarea
                                     value={stagingData.aiPersona || ''}
                                     onChange={e => setStagingData({ ...stagingData, aiPersona: e.target.value })}
-                                    className="w-full p-3 bg-white border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none h-24 text-sm leading-relaxed"
+                                    className="w-full light-input h-24 text-sm leading-relaxed"
                                     placeholder="AI 生成的候选人综合评价 (100字以内)..."
                                     maxLength={120}
                                 />
                                 <div className="mt-3 flex gap-2 flex-wrap">
                                     {(stagingData.aiTags || []).map((tag, idx) => (
-                                        <span key={idx} className="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs border border-purple-200">
+                                        <span key={idx} className="bg-purple-100 text-purple-600 px-2 py-1 rounded text-xs border border-purple-200">
                                             #{tag}
                                         </span>
                                     ))}
@@ -842,10 +927,10 @@ const App: React.FC = () => {
                     </div>
 
                     <div className="mt-8 flex gap-4">
-                        <button onClick={handleSaveToDB} className="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-green-200 flex items-center justify-center gap-2">
+                        <button onClick={handleSaveToDB} className="flex-1 bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition-colors shadow-lg shadow-indigo-200">
                             <Save size={20} /> 确认入库
                         </button>
-                        <button onClick={() => { setStagingData(null); setStagingFile(null); }} className="px-6 py-3 border border-gray-200 rounded-xl text-gray-600 hover:bg-gray-50 font-medium">
+                        <button onClick={() => { setStagingData(null); setStagingFile(null); }} className="px-6 py-3 border border-gray-200 rounded-xl text-gray-400 hover:bg-gray-50 font-medium transition-colors">
                             取消
                         </button>
                     </div>
@@ -867,6 +952,9 @@ const App: React.FC = () => {
         };
 
         const filtered = candidates.filter(c => {
+            // ID Search
+            const matchesIdSearch = !idSearchTerm || (c.talentId && c.talentId.startsWith(idSearchTerm));
+
             // Text Search
             const matchesSearch =
                 c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -900,10 +988,10 @@ const App: React.FC = () => {
                 matchesExp &&
                 matchesEducation &&
                 matchesLocation &&
-                (!filterCriteria.gender || c.gender === filterCriteria.gender) &&
+                (!filterCriteria.gender || c.gender.includes(filterCriteria.gender)) &&
                 (!filterCriteria.intent || c.intent.includes(filterCriteria.intent));
 
-            return matchesSearch && matchesFilter;
+            return matchesIdSearch && matchesSearch && matchesFilter;
         });
 
         const activeFilterCount = Object.values(filterCriteria).filter(Boolean).length + selectedEducations.length + selectedLocations.length;
@@ -911,16 +999,35 @@ const App: React.FC = () => {
         return (
             <div className="h-full flex flex-col">
                 <div className="flex justify-between items-center mb-6 relative">
-                    <h2 className="text-2xl font-bold text-gray-800">人才管理</h2>
+                    <h2 className="text-3xl font-serif text-gray-800">人才管理</h2>
                     <div className="flex gap-3">
+                        {/* Age Correction Button */}
+                        <button
+                            onClick={() => setShowAgeCorrection(true)}
+                            className="light-glass flex items-center gap-2 px-4 py-2 text-gray-600 rounded-xl font-medium hover:scale-[1.02] transition-transform"
+                        >
+                            <RefreshCw size={18} />
+                            <span>年龄校正</span>
+                        </button>
+
                         {/* Export Excel Button */}
                         <button
                             onClick={handleExportExcel}
-                            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-medium hover:from-green-600 hover:to-emerald-700 transition-all shadow-lg shadow-green-200 hover-lift"
+                            className="light-glass flex items-center gap-2 px-4 py-2 text-gray-600 rounded-xl font-medium hover:scale-[1.02] transition-transform"
                         >
                             <Download size={18} />
                             <span>导出 Excel</span>
                         </button>
+
+                        <div className="relative">
+                            <Tag className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+                            <input
+                                value={idSearchTerm}
+                                onChange={(e) => setIdSearchTerm(e.target.value)}
+                                placeholder="人才ID搜索..."
+                                className="pl-10 pr-4 py-2.5 light-input w-40 font-mono text-sm"
+                            />
+                        </div>
 
                         <div className="relative">
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
@@ -928,7 +1035,7 @@ const App: React.FC = () => {
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                 placeholder="搜索姓名、画像、标签..."
-                                className="pl-10 pr-4 py-2.5 bg-white/80 backdrop-blur border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none w-64 shadow-soft"
+                                className="pl-10 pr-4 py-2.5 light-input w-64"
                             />
                         </div>
 
@@ -936,14 +1043,14 @@ const App: React.FC = () => {
                             <button
                                 onClick={() => setShowFilterPanel(!showFilterPanel)}
                                 className={`flex items-center gap-2 px-4 py-2 border rounded-lg transition-colors ${showFilterPanel || activeFilterCount > 0
-                                    ? 'bg-blue-50 border-blue-200 text-blue-700'
-                                    : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50'
+                                    ? 'bg-indigo-50 border-indigo-200 text-indigo-600'
+                                    : 'border-gray-200 text-gray-400 hover:bg-gray-50 hover:text-gray-600'
                                     }`}
                             >
                                 <Filter size={18} />
                                 <span>筛选</span>
                                 {activeFilterCount > 0 && (
-                                    <span className="bg-blue-600 text-white text-[10px] px-1.5 py-0.5 rounded-full ml-1">
+                                    <span className="bg-indigo-500 text-white text-[10px] px-1.5 py-0.5 rounded-full ml-1">
                                         {activeFilterCount}
                                     </span>
                                 )}
@@ -951,7 +1058,7 @@ const App: React.FC = () => {
 
                             {/* Filter Dropdown Panel */}
                             {showFilterPanel && (
-                                <div className="absolute right-0 top-12 w-[600px] bg-white border border-gray-100 shadow-2xl rounded-2xl p-6 z-50 animate-in fade-in slide-in-from-top-2">
+                                <div className="absolute right-0 top-12 w-[600px] light-glass rounded-2xl p-6 z-50 animate-fade-rise">
                                     <div className="flex items-center justify-between mb-4">
                                         <h3 className="font-bold text-gray-800">高级筛选</h3>
                                         <button onClick={clearFilters} className="text-xs text-red-500 hover:underline">清空条件</button>
@@ -966,15 +1073,15 @@ const App: React.FC = () => {
                                                     placeholder="Min"
                                                     value={filterCriteria.ageMin}
                                                     onChange={e => setFilterCriteria({ ...filterCriteria, ageMin: e.target.value })}
-                                                    className="w-full p-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-center focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                                    className="w-full light-input text-sm text-center"
                                                 />
-                                                <span className="text-gray-400">-</span>
+                                                <span className="text-gray-300">-</span>
                                                 <input
                                                     type="number"
                                                     placeholder="Max"
                                                     value={filterCriteria.ageMax}
                                                     onChange={e => setFilterCriteria({ ...filterCriteria, ageMax: e.target.value })}
-                                                    className="w-full p-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-center focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                                    className="w-full light-input text-sm text-center"
                                                 />
                                             </div>
                                         </div>
@@ -987,15 +1094,15 @@ const App: React.FC = () => {
                                                     placeholder="Min"
                                                     value={filterCriteria.expMin}
                                                     onChange={e => setFilterCriteria({ ...filterCriteria, expMin: e.target.value })}
-                                                    className="w-full p-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-center focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                                    className="w-full light-input text-sm text-center"
                                                 />
-                                                <span className="text-gray-400">-</span>
+                                                <span className="text-gray-300">-</span>
                                                 <input
                                                     type="number"
                                                     placeholder="Max"
                                                     value={filterCriteria.expMax}
                                                     onChange={e => setFilterCriteria({ ...filterCriteria, expMax: e.target.value })}
-                                                    className="w-full p-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-center focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                                    className="w-full light-input text-sm text-center"
                                                 />
                                             </div>
                                         </div>
@@ -1005,7 +1112,7 @@ const App: React.FC = () => {
                                             <select
                                                 value={filterCriteria.gender}
                                                 onChange={e => setFilterCriteria({ ...filterCriteria, gender: e.target.value })}
-                                                className="w-full p-2 bg-gray-50 border border-gray-200 rounded-lg text-sm"
+                                                className="w-full light-input text-sm"
                                             >
                                                 <option value="">全部</option>
                                                 <option value="男">男</option>
@@ -1027,8 +1134,8 @@ const App: React.FC = () => {
                                                             }
                                                         }}
                                                         className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${selectedEducations.includes(edu)
-                                                            ? 'bg-blue-600 text-white shadow-lg shadow-blue-200'
-                                                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                                            ? 'bg-indigo-500 text-white shadow-lg shadow-indigo-200'
+                                                            : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
                                                             }`}
                                                     >
                                                         {edu}
@@ -1036,16 +1143,16 @@ const App: React.FC = () => {
                                                 ))}
                                             </div>
                                             {selectedEducations.length > 0 && (
-                                                <p className="text-xs text-blue-500 mt-2">已选择: {selectedEducations.join('、')}</p>
+                                                <p className="text-xs text-indigo-500 mt-2">已选择: {selectedEducations.join('、')}</p>
                                             )}
                                         </div>
-                                        {/* Intent - Replaced IsEmployed */}
+                                        {/* Intent */}
                                         <div>
                                             <label className="block text-xs font-bold text-gray-400 mb-1">意向</label>
                                             <select
                                                 value={filterCriteria.intent}
                                                 onChange={e => setFilterCriteria({ ...filterCriteria, intent: e.target.value })}
-                                                className="w-full p-2 bg-gray-50 border border-gray-200 rounded-lg text-sm"
+                                                className="w-full light-input text-sm"
                                             >
                                                 <option value="">全部</option>
                                                 <option value="在职，稳定">在职，稳定</option>
@@ -1070,8 +1177,8 @@ const App: React.FC = () => {
                                                             }
                                                         }}
                                                         className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${selectedLocations.includes(loc)
-                                                            ? 'bg-green-600 text-white shadow-lg shadow-green-200'
-                                                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                                            ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-200'
+                                                            : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
                                                             }`}
                                                     >
                                                         {loc}
@@ -1094,7 +1201,7 @@ const App: React.FC = () => {
                                                             setCustomLocationInput('');
                                                         }
                                                     }}
-                                                    className="flex-1 p-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                                                    className="flex-1 light-input text-sm"
                                                 />
                                                 <button
                                                     onClick={() => {
@@ -1103,7 +1210,7 @@ const App: React.FC = () => {
                                                             setCustomLocationInput('');
                                                         }
                                                     }}
-                                                    className="p-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors shadow-lg shadow-green-200"
+                                                    className="p-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors shadow-lg shadow-emerald-200"
                                                 >
                                                     <span className="font-bold text-lg leading-none">+</span>
                                                 </button>
@@ -1111,7 +1218,7 @@ const App: React.FC = () => {
                                             {selectedLocations.length > 0 && (
                                                 <div className="mt-3 flex flex-wrap gap-1.5">
                                                     {selectedLocations.map(loc => (
-                                                        <span key={loc} className="inline-flex items-center gap-1 px-2.5 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium border border-green-200">
+                                                        <span key={loc} className="inline-flex items-center gap-1 px-2.5 py-1 bg-emerald-50 text-emerald-600 rounded-full text-xs font-medium border border-emerald-200">
                                                             {loc}
                                                             <button onClick={() => setSelectedLocations(selectedLocations.filter(l => l !== loc))} className="hover:text-red-500 transition-colors ml-0.5">
                                                                 <X size={12} />
@@ -1122,8 +1229,8 @@ const App: React.FC = () => {
                                             )}
                                         </div>
                                     </div>
-                                    <div className="mt-4 pt-4 border-t border-gray-50 flex justify-end">
-                                        <button onClick={() => setShowFilterPanel(false)} className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700">完成</button>
+                                    <div className="mt-4 pt-4 border-t border-gray-100 flex justify-end">
+                                        <button onClick={() => setShowFilterPanel(false)} className="px-4 py-2 bg-indigo-500 text-white rounded-lg text-sm font-medium hover:bg-indigo-600 transition-colors">完成</button>
                                     </div>
                                 </div>
                             )}
@@ -1131,12 +1238,13 @@ const App: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="flex-1 bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col relative">
-                    <div className="overflow-auto flex-1 pb-4">
+                <div className="flex-1 bg-white backdrop-blur rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col relative">
+                    <div className="overflow-auto flex-1 pb-4 light-scroll">
                         <table className="w-max text-sm text-left border-collapse">
-                            <thead className="bg-gray-50 text-gray-500 font-medium border-b border-gray-200 sticky top-0 z-10">
+                            <thead className="bg-slate-50 text-slate-600 font-semibold border-b border-gray-200 sticky top-0 z-10">
                                 <tr>
-                                    <th className="py-4 px-4 whitespace-nowrap sticky left-0 bg-gray-50 border-r border-gray-100 shadow-sm w-48">基本信息</th>
+                                    <th className="py-4 px-4 whitespace-nowrap sticky left-0 bg-slate-50 border-r border-gray-200 shadow-sm w-48">基本信息</th>
+                                    <th className="py-4 px-4 whitespace-nowrap w-36">人才ID</th>
                                     <th className="py-4 px-4 whitespace-nowrap w-32">最近职位</th>
                                     <th className="py-4 px-4 whitespace-nowrap w-24">经验</th>
                                     <th className="py-4 px-4 whitespace-nowrap w-64">岗位经验</th>
@@ -1147,13 +1255,13 @@ const App: React.FC = () => {
                                     <th className="py-4 px-4 whitespace-nowrap w-48">AI 画像</th>
                                     <th className="py-4 px-4 whitespace-nowrap w-64">备注/来源</th>
                                     <th className="py-4 px-4 whitespace-nowrap w-32">更新时间</th>
-                                    <th className="py-4 px-4 whitespace-nowrap sticky right-0 bg-gray-50 border-l border-gray-100 shadow-sm text-center">操作</th>
+                                    <th className="py-4 px-4 whitespace-nowrap sticky right-0 bg-slate-50 border-l border-gray-200 shadow-sm text-center">操作</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-100">
                                 {filtered.length === 0 ? (
                                     <tr>
-                                        <td colSpan={12} className="py-12 text-center text-gray-400">暂无数据</td>
+                                        <td colSpan={13} className="py-12 text-center text-gray-400">暂无数据</td>
                                     </tr>
                                 ) : (
                                     filtered.map(c => {
@@ -1161,63 +1269,64 @@ const App: React.FC = () => {
                                         const data = isEditing && editForm ? editForm : c;
 
                                         return (
-                                            <tr key={c.id} className="hover:bg-blue-50/50 transition-colors group h-auto py-6">
-                                                <td className="py-4 px-4 sticky left-0 bg-white group-hover:bg-blue-50/50 border-r border-gray-100 align-top">
-                                                    <div className="font-bold text-gray-900 mb-1 text-base">{data.name}</div>
-                                                    <div className="text-xs text-gray-500 mb-2">{data.gender} | {data.age} | {data.education}</div>
+                                            <tr key={c.id} className="hover:bg-indigo-50/40 transition-colors group h-auto py-6 text-slate-700">
+                                                <td className="py-4 px-4 sticky left-0 bg-white group-hover:bg-indigo-50/40 border-r border-gray-200 align-top">
+                                                    <div className="font-bold text-slate-900 mb-1 text-base">{data.name}</div>
+                                                    <div className="text-xs text-slate-600 mb-2">{data.gender} | {data.age} | {data.education}</div>
                                                     <div className="flex flex-wrap gap-1">
                                                         {(data.aiTags || []).slice(0, 3).map((t, i) => (
-                                                            <span key={i} className="text-[10px] px-1.5 py-0.5 bg-purple-100 text-purple-700 rounded border border-purple-200 whitespace-nowrap">
+                                                            <span key={i} className="text-[10px] px-1.5 py-0.5 bg-purple-50 text-purple-600 rounded border border-purple-200 whitespace-nowrap">
                                                                 {t}
                                                             </span>
                                                         ))}
                                                     </div>
                                                 </td>
 
-                                                <td className="py-4 px-4 align-top cursor-pointer hover:bg-blue-100/30 transition-colors" onClick={() => setModalCandidate(c)}>
-                                                    {isEditing ? <input className="w-full p-2 border rounded" value={data.recentRole} onChange={e => setEditForm({ ...editForm!, recentRole: e.target.value })} /> : <span className="text-blue-600 font-medium">{data.recentRole}</span>}
+                                                <td className="py-4 px-4 align-top">
+                                                    <div className="text-xs font-mono text-indigo-600 bg-indigo-50 px-2 py-1 rounded border border-indigo-100 whitespace-nowrap">{data.talentId || '-'}</div>
                                                 </td>
 
-                                                <td className="py-4 px-4 align-top cursor-pointer hover:bg-blue-100/30 transition-colors" onClick={() => setModalCandidate(c)}>
-                                                    {isEditing ? <input className="w-full p-2 border rounded" value={data.yearsOfExperience} onChange={e => setEditForm({ ...editForm!, yearsOfExperience: e.target.value })} /> : data.yearsOfExperience}
+                                                <td className="py-4 px-4 align-top cursor-pointer hover:bg-blue-50/30 transition-colors" onClick={() => setModalCandidate(c)}>
+                                                    {isEditing ? <input className="w-full light-input text-sm" value={data.recentRole} onChange={e => setEditForm({ ...editForm!, recentRole: e.target.value })} /> : <span className="text-indigo-600 font-medium">{data.recentRole}</span>}
                                                 </td>
 
-                                                <td className="py-4 px-4 align-top cursor-pointer hover:bg-blue-100/30 transition-colors" onClick={() => setModalCandidate(c)}>
-                                                    {isEditing ? <textarea className="w-full p-2 border rounded text-xs h-20" value={data.positionExperience} onChange={e => setEditForm({ ...editForm!, positionExperience: e.target.value })} /> : <div className="text-xs text-gray-600 w-64 leading-relaxed whitespace-pre-wrap">{data.positionExperience}</div>}
+                                                <td className="py-4 px-4 align-top cursor-pointer hover:bg-blue-50/30 transition-colors" onClick={() => setModalCandidate(c)}>
+                                                    {isEditing ? <input className="w-full light-input text-sm" value={data.yearsOfExperience} onChange={e => setEditForm({ ...editForm!, yearsOfExperience: e.target.value })} /> : data.yearsOfExperience}
                                                 </td>
 
-                                                <td className="py-4 px-4 align-top cursor-pointer hover:bg-blue-100/30 transition-colors" onClick={() => setModalCandidate(c)}>
-                                                    {isEditing ? <textarea className="w-full p-2 border rounded text-xs" value={data.currentCompany} onChange={e => setEditForm({ ...editForm!, currentCompany: e.target.value })} /> : <div className="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">{data.currentCompany}</div>}
+                                                <td className="py-4 px-4 align-top cursor-pointer hover:bg-blue-50/30 transition-colors" onClick={() => setModalCandidate(c)}>
+                                                    {isEditing ? <textarea className="w-full light-input text-xs h-20" value={data.positionExperience} onChange={e => setEditForm({ ...editForm!, positionExperience: e.target.value })} /> : <div className="text-xs text-gray-500 w-64 leading-relaxed whitespace-pre-wrap">{data.positionExperience}</div>}
+                                                </td>
+
+                                                <td className="py-4 px-4 align-top cursor-pointer hover:bg-blue-50/30 transition-colors" onClick={() => setModalCandidate(c)}>
+                                                    {isEditing ? <textarea className="w-full light-input text-xs" value={data.currentCompany} onChange={e => setEditForm({ ...editForm!, currentCompany: e.target.value })} /> : <div className="text-sm text-gray-600 whitespace-pre-wrap leading-relaxed">{data.currentCompany}</div>}
                                                 </td>
 
                                                 <td className="py-4 px-4 align-top space-y-2">
                                                     {isEditing ? (
-                                                        <>
-                                                            <select className="w-full p-1 border rounded text-xs" value={data.intent} onChange={e => setEditForm({ ...editForm!, intent: e.target.value })}><option value="在职，稳定">在职，稳定</option><option value="在职，看机会">在职，看机会</option><option value="离职，不考虑">离职，不考虑</option><option value="离职，看机会">离职，看机会</option><option value="未知">未知</option></select>
-                                                            <select className="w-full p-1 border rounded text-xs" value={data.isEmployed} onChange={e => setEditForm({ ...editForm!, isEmployed: e.target.value })}><option value="在职">在职</option><option value="离职">离职</option><option value="未知">未知</option></select>
-                                                        </>
+                                                        <select className="w-full light-input text-xs" value={data.intent} onChange={e => setEditForm({ ...editForm!, intent: e.target.value })}><option value="在职，稳定">在职，稳定</option><option value="在职，看机会">在职，看机会</option><option value="离职，不考虑">离职，不考虑</option><option value="离职，看机会">离职，看机会</option><option value="未知">未知</option></select>
                                                     ) : (
                                                         <div className="text-xs space-y-1">
-                                                            <div className="font-medium px-2 py-0.5 bg-gray-100 rounded inline-block">{data.intent}</div>
-                                                            <div className="text-gray-500 px-2">{data.isEmployed}</div>
+                                                            <div className="font-medium px-2 py-0.5 bg-gray-100 rounded inline-block text-gray-700">{data.intent}</div>
+                                                            <div className="text-gray-400 px-2">{data.intent === '未知' ? '未知' : data.intent.startsWith('在职') ? '在职' : data.intent.startsWith('离职') ? '离职' : '未知'}</div>
                                                         </div>
                                                     )}
                                                 </td>
 
                                                 <td className="py-4 px-4 align-top">
-                                                    {isEditing ? <input className="w-full p-2 border rounded" value={data.location} onChange={e => setEditForm({ ...editForm!, location: e.target.value })} /> : data.location}
+                                                    {isEditing ? <input className="w-full light-input text-sm" value={data.location} onChange={e => setEditForm({ ...editForm!, location: e.target.value })} /> : data.location}
                                                 </td>
 
                                                 <td className="py-4 px-4 align-top">
-                                                    {isEditing ? <input className="w-full p-2 border rounded text-xs" value={data.contact} onChange={e => setEditForm({ ...editForm!, contact: e.target.value })} /> : <div className="text-xs font-mono">{data.contact}</div>}
+                                                    {isEditing ? <input className="w-full light-input text-xs" value={data.contact} onChange={e => setEditForm({ ...editForm!, contact: e.target.value })} /> : <div className="text-xs font-mono text-gray-500">{data.contact}</div>}
                                                 </td>
 
                                                 <td className="py-4 px-4 align-top">
                                                     {isEditing ? (
-                                                        <textarea className="w-full p-2 border rounded text-xs h-20" value={data.aiPersona} onChange={e => setEditForm({ ...editForm!, aiPersona: e.target.value })} />
+                                                        <textarea className="w-full light-input text-xs h-20" value={data.aiPersona} onChange={e => setEditForm({ ...editForm!, aiPersona: e.target.value })} />
                                                     ) : (
                                                         <div className="w-48">
-                                                            <div className="text-xs text-purple-700 bg-purple-50 p-2 rounded mb-1 leading-relaxed whitespace-pre-wrap">{data.aiPersona || '暂无画像'}</div>
+                                                            <div className="text-xs text-purple-700 bg-purple-50 p-2 rounded mb-1 leading-relaxed whitespace-pre-wrap border border-purple-100">{data.aiPersona || '暂无画像'}</div>
                                                         </div>
                                                     )}
                                                 </td>
@@ -1225,8 +1334,8 @@ const App: React.FC = () => {
                                                 <td className="py-4 px-4 align-top">
                                                     {isEditing ? (
                                                         <>
-                                                            <input className="w-full p-1 border rounded text-xs mb-1" placeholder="来源" value={data.source} onChange={e => setEditForm({ ...editForm!, source: e.target.value })} />
-                                                            <textarea className="w-full p-1 border rounded text-xs h-24" placeholder="备注" value={data.notes} onChange={e => setEditForm({ ...editForm!, notes: e.target.value })} />
+                                                            <input className="w-full light-input text-xs mb-1" placeholder="来源" value={data.source} onChange={e => setEditForm({ ...editForm!, source: e.target.value })} />
+                                                            <textarea className="w-full light-input text-xs h-24" placeholder="备注" value={data.notes} onChange={e => setEditForm({ ...editForm!, notes: e.target.value })} />
                                                         </>
                                                     ) : (
                                                         <div className="text-xs w-64 space-y-2">
@@ -1248,7 +1357,7 @@ const App: React.FC = () => {
                                                                     )}
                                                                 </div>
                                                             )}
-                                                            {data.notes && <div className="text-gray-900 whitespace-pre-wrap leading-relaxed">{data.notes}</div>}
+                                                            {data.notes && <div className="text-gray-700 whitespace-pre-wrap leading-relaxed">{data.notes}</div>}
                                                         </div>
                                                     )}
                                                 </td>
@@ -1257,24 +1366,24 @@ const App: React.FC = () => {
                                                     {data.lastModified?.split(' ')[0] || data.dateAdded}
                                                 </td>
 
-                                                <td className="py-4 px-4 sticky right-0 bg-white group-hover:bg-blue-50/50 border-l border-gray-100 text-center align-top">
+                                                <td className="py-4 px-4 sticky right-0 bg-white group-hover:bg-indigo-50/40 border-l border-gray-200 text-center align-top">
                                                     {isEditing ? (
                                                         <div className="flex flex-col gap-2">
-                                                            <button onClick={saveEdit} className="p-1.5 bg-green-600 text-white rounded text-xs flex items-center justify-center gap-1 hover:bg-green-700">
+                                                            <button onClick={saveEdit} className="p-1.5 bg-green-500 text-white rounded text-xs flex items-center justify-center gap-1 hover:bg-green-600">
                                                                 <Save size={14} /> 保存
                                                             </button>
-                                                            <button onClick={cancelEdit} className="p-1.5 bg-gray-200 text-gray-700 rounded text-xs flex items-center justify-center gap-1 hover:bg-gray-300">
+                                                            <button onClick={cancelEdit} className="p-1.5 bg-gray-100 text-gray-600 rounded text-xs flex items-center justify-center gap-1 hover:bg-gray-200">
                                                                 <X size={14} /> 取消
                                                             </button>
                                                         </div>
                                                     ) : (
                                                         <div className="flex flex-col gap-2 items-center">
-                                                            <button onClick={() => startEdit(c)} className="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-100 rounded w-full flex items-center justify-center bg-white border border-gray-100 shadow-sm" title="编辑">
+                                                            <button onClick={() => startEdit(c)} className="p-1.5 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded w-full flex items-center justify-center bg-white border border-gray-100 shadow-sm" title="编辑">
                                                                 <Edit2 size={14} />
                                                             </button>
                                                             <div className="flex gap-2">
                                                                 {c.fileName && (
-                                                                    <button onClick={() => fileSystem.openResumeFile(c.fileName)} className="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-100 rounded bg-white border border-gray-100 shadow-sm" title="查看简历">
+                                                                    <button onClick={() => fileSystem.openResumeFile(c.fileName)} className="p-1.5 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded bg-white border border-gray-100 shadow-sm" title="查看简历">
                                                                         <FileText size={14} />
                                                                     </button>
                                                                 )}
@@ -1285,7 +1394,7 @@ const App: React.FC = () => {
                                                                         await fileSystem.writeDatabase(newList);
                                                                         if (c.fileName) await fileSystem.deleteResumeFile(c.fileName);
                                                                     }
-                                                                }} className="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-100 rounded bg-white border border-gray-100 shadow-sm" title="删除">
+                                                                }} className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded bg-white border border-gray-100 shadow-sm" title="删除">
                                                                     <Trash2 size={14} />
                                                                 </button>
                                                             </div>
@@ -1299,7 +1408,7 @@ const App: React.FC = () => {
                             </tbody>
                         </table>
                     </div>
-                    <div className="p-3 border-t border-gray-200 text-xs text-gray-500 text-right bg-white z-20">
+                    <div className="p-3 border-t border-gray-100 text-xs text-gray-500 text-right bg-white/50 z-20">
                         共 {filtered.length} 条记录
                     </div>
                 </div>
@@ -1309,52 +1418,52 @@ const App: React.FC = () => {
 
     const renderSettings = () => (
         <div className="max-w-2xl mx-auto space-y-8">
-            <h2 className="text-2xl font-bold text-gray-800">系统设置</h2>
+            <h2 className="text-3xl font-serif text-gray-800">系统设置</h2>
 
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-6">
-                <h3 className="text-lg font-bold border-b border-gray-100 pb-3 mb-4">基本配置</h3>
+            <div className="light-glass p-6 rounded-2xl space-y-6">
+                <h3 className="text-lg font-bold text-gray-800 border-b border-gray-100 pb-3 mb-4">基本配置</h3>
 
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">存储路径 (Google Drive / 本地)</label>
+                    <label className="block text-sm font-medium text-gray-600 mb-1">存储路径 (本地文件夹)</label>
                     <div className="flex gap-3">
-                        <div className="flex-1 bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-sm flex items-center gap-2">
-                            <FolderOpen size={16} className="text-blue-500" />
+                        <div className="flex-1 bg-gray-50 border border-gray-100 rounded-lg px-4 py-2 text-sm flex items-center gap-2">
+                            <FolderOpen size={16} className="text-indigo-500" />
                             <span className="text-gray-700 font-medium">{folderPath}</span>
                         </div>
-                        <button onClick={handleReconnect} className="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm hover:bg-black">更改/重新授权</button>
+                        <button onClick={handleReconnect} className="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm hover:bg-black transition-colors">更改/重新授权</button>
                     </div>
-                    <p className="text-xs text-gray-400 mt-2">支持 Google Drive 桌面版同步文件夹。数据将以相对路径保存，确保多设备同步时的链接有效性。</p>
+                    <p className="text-xs text-gray-400 mt-2">数据将保存在所选文件夹中，建议使用固定位置避免数据丢失。</p>
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Gemini API Key</label>
+                    <label className="block text-sm font-medium text-gray-600 mb-1">Gemini API Key</label>
                     <div className="flex gap-3">
                         <input type="password" value={config.apiKey} onChange={(e) => {
                             const newKey = e.target.value;
                             setConfig({ ...config, apiKey: newKey });
                             localStorage.setItem('talentos_api_key', newKey);
-                        }} className="flex-1 bg-white border border-gray-200 rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500" />
+                        }} className="flex-1 light-input" />
                     </div>
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">您的称呼 (系统固定)</label>
-                    <input value="陈哈哈" disabled className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 outline-none text-gray-500 cursor-not-allowed" />
+                    <label className="block text-sm font-medium text-gray-600 mb-1">您的称呼 (系统固定)</label>
+                    <input value="陈哈哈" disabled className="w-full light-input opacity-50 cursor-not-allowed" />
                 </div>
 
                 {/* Avatar Upload Section */}
                 <div className="pt-6 border-t border-gray-100">
-                    <label className="block text-sm font-medium text-gray-700 mb-3">个人头像</label>
+                    <label className="block text-sm font-medium text-gray-600 mb-3">个人头像</label>
                     <div className="flex items-center gap-4">
                         {userAvatar ? (
                             <img src={userAvatar} alt="Avatar" className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-lg" />
                         ) : (
-                            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white font-bold text-xl shadow-lg">
+                            <div className="w-16 h-16 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xl">
                                 陈
                             </div>
                         )}
                         <div>
-                            <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl font-medium hover:from-blue-600 hover:to-indigo-700 transition-all shadow-lg shadow-blue-200">
+                            <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl font-medium transition-colors shadow-lg shadow-indigo-200">
                                 <ImageIcon size={18} />
                                 上传头像
                                 <input type="file" accept="image/*" onChange={handleAvatarUpload} className="hidden" />
@@ -1365,7 +1474,7 @@ const App: React.FC = () => {
                 </div>
 
                 <div className="pt-6 border-t border-gray-100">
-                    <button onClick={() => { localStorage.clear(); window.location.reload(); }} className="text-red-600 text-sm font-medium hover:underline flex items-center gap-2">
+                    <button onClick={() => { localStorage.clear(); window.location.reload(); }} className="text-red-500 text-sm font-medium hover:underline flex items-center gap-2">
                         <LogOut size={16} /> 清除本地缓存并退出
                     </button>
                 </div>
@@ -1390,11 +1499,41 @@ const App: React.FC = () => {
                     onClose={() => setModalCandidate(null)}
                 />
             )}
-            <div className="flex h-screen font-sans text-slate-800 overflow-hidden">
+            {showAgeCorrection && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm" onClick={() => setShowAgeCorrection(false)}>
+                    <div className="bg-white rounded-2xl shadow-2xl w-[420px] overflow-hidden animate-fade-rise border border-gray-100" onClick={e => e.stopPropagation()}>
+                        <div className="p-6 border-b border-gray-100">
+                            <h3 className="text-lg font-bold text-gray-800">年龄校正</h3>
+                            <p className="text-sm text-gray-500 mt-1">根据当前日期与入库时间的差值，自动更新候选人年龄</p>
+                        </div>
+                        <div className="p-6 space-y-4">
+                            <div>
+                                <label className="block text-xs font-bold text-gray-400 mb-2">当前日期 (格式: YYYYMMDD)</label>
+                                <input
+                                    type="text"
+                                    placeholder="例如 20270601"
+                                    value={ageCorrectionDate}
+                                    onChange={e => setAgeCorrectionDate(e.target.value)}
+                                    className="w-full light-input text-center text-lg font-mono"
+                                    maxLength={8}
+                                />
+                            </div>
+                            <p className="text-xs text-gray-400">系统将将当前日期与每位候选人的入库日期（人才ID中的日期部分）进行比较，超过1年则年龄+1，以此类推。</p>
+                        </div>
+                        <div className="p-6 border-t border-gray-100 flex justify-end gap-3">
+                            <button onClick={() => { setShowAgeCorrection(false); setAgeCorrectionDate(''); }} className="px-5 py-2.5 border border-gray-200 rounded-xl text-gray-500 hover:bg-gray-50 font-medium transition-colors">取消</button>
+                            <button onClick={handleAgeCorrection} className="bg-indigo-500 hover:bg-indigo-600 px-5 py-2.5 rounded-xl font-medium transition-colors flex items-center gap-2 text-white shadow-lg shadow-indigo-200">
+                                <RefreshCw size={18} /> 执行校正
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+            <div className="flex h-screen font-sans text-gray-800 overflow-hidden">
                 <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} userAvatar={userAvatar} />
 
-                <main className="flex-1 flex flex-col h-full overflow-hidden relative bg-gradient-to-br from-slate-50/80 via-blue-50/30 to-indigo-50/50">
-                    <div className="flex-1 overflow-y-auto p-8">
+                <main className="flex-1 flex flex-col h-full overflow-hidden relative" style={{ backgroundColor: '#f5f5f7' }}>
+                    <div className="flex-1 overflow-y-auto p-8 light-scroll">
                         {activeTab === 'entry' && renderEntry()}
                         {activeTab === 'management' && renderManagement()}
                         {activeTab === 'settings' && renderSettings()}

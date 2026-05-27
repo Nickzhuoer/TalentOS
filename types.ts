@@ -10,6 +10,7 @@ export enum CandidateStatus {
 
 export interface Candidate {
   id: string;
+  talentId: string; // 人才ID, format: YYYYMMDD#NN
   name: string;
   gender: string;
   age: string;
